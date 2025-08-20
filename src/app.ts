@@ -2,7 +2,7 @@ import type { App } from "electron"; // สำหรับ type ใน TS
 import { app, BrowserWindow, Menu, WebContentsView } from "electron";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
-import Shield from "./libs/shield.js";
+import Shield from "./lib/shield.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
