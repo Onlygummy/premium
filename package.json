@@ -15,7 +15,10 @@
     "typescript": "^5"
   },
   "dependencies": {
+    "@ghostery/adblocker-electron": "^2.11.3",
+    "@ghostery/adblocker-electron-preload": "^2.11.3",
     "@types/electron": "^1.6.12",
+    "cross-fetch": "^4.1.0",
     "electron": "^37.3.1"
   }
 }

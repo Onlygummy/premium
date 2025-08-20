@@ -23,6 +23,7 @@
     "noUnusedLocals": false,
     "noUnusedParameters": false,
     "noPropertyAccessFromIndexSignature": false,
+    "verbatimModuleSyntax": true,
 
     // Electron + Node types
     "types": ["node", "electron"]
@@ -31,7 +32,7 @@
     "src/**/*",
     "src/global.d.ts",
     "src/renderer/main.ts",
-    "dist/**/*"
+    "data/**/*"
   ],
   "exclude": ["node_modules"]
 }

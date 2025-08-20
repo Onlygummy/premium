@@ -2,7 +2,7 @@ import type { App } from "electron"; // สำหรับ type ใน TS
 import { app, BrowserWindow, Menu, WebContentsView } from "electron";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
-import { setupAdblock } from "./libs/adblock";
+import Shield from "./libs/shield.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -13,9 +13,6 @@ Menu.setApplicationMenu(null);
 const createWindow = () => {
   let mainWindow: BrowserWindow;
   let view: WebContentsView;
-
-  let mainWindowWidth: number;
-  let mainWindowHeight: number;
 
   mainWindow = new BrowserWindow({
     width: 900,
@@ -29,7 +26,7 @@ const createWindow = () => {
 
   mainWindow.loadFile(join(__dirname, "..", "view", "main.html"));
 
-  mainWindow.webContents.on("did-finish-load", () => {
+  mainWindow.webContents.on("did-finish-load", async () => {
     view = new WebContentsView({
       webPreferences: {
         sandbox: true,
@@ -43,11 +40,18 @@ const createWindow = () => {
       width: mainWindow.getBounds().width - 12,
       height: mainWindow.getBounds().height - 24,
     });
+
+    view.webContents.on("console-message", (e) => e.preventDefault());
+
+    //เพิ่ม shield ให้กับ view
+    const shield = new Shield();
+    await shield.adblock(view);
+
     view.webContents.loadURL("https://youtube.com");
     mainWindow.contentView.addChildView(view);
 
     view.webContents.on("did-finish-load", () => {
-      view.webContents.openDevTools({ mode: "right" });
+      //view.webContents.openDevTools({ mode: "right" });
     });
   });
 
@@ -64,7 +68,9 @@ const createWindow = () => {
 };
 
 app.whenReady().then(() => {
-  setupAdblock();
+  app.commandLine.appendSwitch("disable-logging");
+  app.commandLine.appendSwitch("disable-breakpad");
+
   createWindow();
 });
 
