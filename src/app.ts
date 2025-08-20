@@ -29,6 +29,7 @@ const createWindow = () => {
   mainWindow.webContents.on("did-finish-load", async () => {
     view = new WebContentsView({
       webPreferences: {
+        preload: join(__dirname, "main", "preload.js"),
         sandbox: true,
         contextIsolation: true,
       },
